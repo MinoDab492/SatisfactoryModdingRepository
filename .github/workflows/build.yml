@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - dev
     paths:
       - "FicsitRemoteMonitoring.uplugin"
       - "Content/**"
@@ -12,7 +11,6 @@ on:
   pull_request:
     branches:
       - "main"
-      - "dev"
     paths:
       - "Content/**"
       - "Source/**"
@@ -20,7 +18,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu
     steps:
       - name: Cleanup
         run: Remove-Item C:\workspace\SatisfactoryModLoader -Recurse -Force -Confirm:$false -ErrorAction Ignore
@@ -28,24 +26,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           path: FicsitRemoteMontioring
-
-      - uses: actions/checkout@master
-        with:
-          repository: porisius/Disc-IT
-          ref: refs/heads/master
-          path: DiscIT
-
-      - uses: actions/checkout@master
-        with:
-          repository: porisius/JSONQuery
-          ref: refs/heads/master
-          path: JSONQuery
-
-      - uses: actions/checkout@master
-        with:
-          repository: porisius/ArduinoKit
-          ref: refs/heads/main
-          path: ArduinoKit
 
       - uses: actions/checkout@master
         with:
@@ -58,18 +38,6 @@ jobs:
 
       - name: Copy FicsitRemoteMontioring to Project
         run: Copy-Item "$Env:GITHUB_WORKSPACE\\FicsitRemoteMontioring" C:\workspace\SatisfactoryModLoader\Mods\FicsitRemoteMonitoring -Recurse -Force -Confirm:$false -ErrorAction Ignore
-
-      - name: Copy Non-Public Source Files to Mod
-        run: Copy-Item C:\workspace\Source_Files\* C:\workspace\SatisfactoryModLoader\Mods\FicsitRemoteMonitoring\Source -Recurse -Force -Confirm:$false -ErrorAction Ignore
-
-      - name: Copy ArduinoKit to Project
-        run: Copy-Item "$Env:GITHUB_WORKSPACE\\ArduinoKit" C:\workspace\SatisfactoryModLoader\Mods\ArduinoKit -Recurse -Force -Confirm:$false -ErrorAction Ignore
-
-      - name: Copy DiscIT to Project
-        run: Copy-Item "$Env:GITHUB_WORKSPACE\\DiscIT" C:\workspace\SatisfactoryModLoader\Mods\DiscIT -Recurse -Force -Confirm:$false -ErrorAction Ignore
-
-      - name: Copy JSONQuery to Project
-        run: Copy-Item "$Env:GITHUB_WORKSPACE\\JSONQuery" C:\workspace\SatisfactoryModLoader\Mods\JSONQuery -Recurse -Force -Confirm:$false -ErrorAction Ignore
 
       - name: Extract WWise
         run: Expand-Archive -Path C:\workspace\WWise.zip -DestinationPath C:\workspace\SatisfactoryModLoader -Force
